@@ -664,7 +664,7 @@
         const upgradeSpacing = 8;
 
         // Calculate total height needed
-        let totalHeight = padding * 2;
+        let totalHeight = padding;
         sortedCategories.forEach((category) => {
           if (category.upgrades && category.upgrades.length > 0) {
             totalHeight += headerSize + 6; // Category header
@@ -701,6 +701,9 @@
             totalHeight += categorySpacing;
           }
         });
+        
+        // Add minimal bottom padding (20% of original)
+        totalHeight += padding * 0.2;
 
         canvas.width = width;
         canvas.height = totalHeight;
