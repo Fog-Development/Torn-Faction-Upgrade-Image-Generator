@@ -293,7 +293,7 @@
         padding: 20px;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         min-height: 200px;
         position: relative;
         overflow: auto;
@@ -443,6 +443,12 @@
               >Transparent Background</label
             >
           </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="centerContent" />
+            <label for="centerContent" class="checkbox-label"
+              >Center Content</label
+            >
+          </div>
         </div>
 
         <button class="btn btn-primary" id="generateBtn">
@@ -506,6 +512,7 @@
         const savedHeaderColor = storage.get("headerColor");
         const savedTextColor = storage.get("textColor");
         const savedTransparent = storage.get("transparentBg");
+        const savedCenterContent = storage.get("centerContent");
 
         if (savedApiKey) document.getElementById("apiKey").value = savedApiKey;
         if (savedBgColor)
@@ -516,6 +523,8 @@
           document.getElementById("textColor").value = savedTextColor;
         if (savedTransparent !== null)
           document.getElementById("transparentBg").checked = savedTransparent;
+        if (savedCenterContent !== null)
+          document.getElementById("centerContent").checked = savedCenterContent;
       });
 
       // Save preferences on change
@@ -543,6 +552,11 @@
         .getElementById("transparentBg")
         .addEventListener("change", (e) =>
           storage.set("transparentBg", e.target.checked)
+        );
+      document
+        .getElementById("centerContent")
+        .addEventListener("change", (e) =>
+          storage.set("centerContent", e.target.checked)
         );
 
       // Main generation function
@@ -607,6 +621,7 @@
         const headerColor = document.getElementById("headerColor").value;
         const textColor = document.getElementById("textColor").value;
         const transparentBg = document.getElementById("transparentBg").checked;
+        const centerContent = document.getElementById("centerContent").checked;
 
         // Sort categories by order field
         const sortedCategories = [...peaceUpgrades].sort(
@@ -685,7 +700,9 @@
           // Draw category header
           ctx.font = `bold ${headerSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
           ctx.fillStyle = headerColor;
-          ctx.fillText(category.name, padding, currentY);
+          const headerX = centerContent ? width / 2 : padding;
+          ctx.textAlign = centerContent ? "center" : "left";
+          ctx.fillText(category.name, headerX, currentY);
           currentY += headerSize + 15;
 
           // Draw upgrades
@@ -695,7 +712,9 @@
             // Upgrade name
             ctx.fillStyle = headerColor;
             ctx.font = `bold ${textSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
-            ctx.fillText(upgrade.name, padding, currentY);
+            const nameX = centerContent ? width / 2 : padding;
+            ctx.textAlign = centerContent ? "center" : "left";
+            ctx.fillText(upgrade.name, nameX, currentY);
             currentY += lineHeight;
 
             // Upgrade ability
@@ -715,14 +734,18 @@
               const testWidth = metrics.width;
 
               if (testWidth > maxWidth && n > 0) {
-                ctx.fillText(line, padding, currentY);
+                const abilityX = centerContent ? width / 2 : padding;
+                ctx.textAlign = centerContent ? "center" : "left";
+                ctx.fillText(line, abilityX, currentY);
                 line = words[n] + " ";
                 currentY += lineHeight;
               } else {
                 line = testLine;
               }
             }
-            ctx.fillText(line, padding, currentY);
+            const abilityX = centerContent ? width / 2 : padding;
+            ctx.textAlign = centerContent ? "center" : "left";
+            ctx.fillText(line, abilityX, currentY);
             currentY += lineHeight + upgradeSpacing;
           });
 
