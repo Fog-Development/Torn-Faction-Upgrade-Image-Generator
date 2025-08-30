@@ -660,14 +660,14 @@
         const lineHeight = 22;
         const headerSize = 24;
         const textSize = 14;
-        const categorySpacing = 35;
+        const categorySpacing = 18;
         const upgradeSpacing = 8;
 
         // Calculate total height needed
         let totalHeight = padding * 2;
         sortedCategories.forEach((category) => {
           if (category.upgrades && category.upgrades.length > 0) {
-            totalHeight += headerSize + 10; // Category header
+            totalHeight += headerSize + 6; // Category header
 
             // Calculate height for each upgrade with word wrapping
             category.upgrades.forEach((upgrade) => {
@@ -729,7 +729,7 @@
           const headerX = centerContent ? width / 2 : padding;
           ctx.textAlign = centerContent ? "center" : "left";
           ctx.fillText(category.name, headerX, currentY);
-          currentY += headerSize + 15;
+          currentY += headerSize + 6;
 
           // Draw upgrades
           ctx.font = `${textSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
